@@ -13,7 +13,6 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
 
-            <!-- Flash Messages -->
             @if (session('success'))
                 <div x-data="{ show: true }" x-show="show" class="flex justify-between items-center bg-green-50 text-green-700 px-4 py-3 rounded-lg border border-green-200">
                     <span class="text-sm font-medium">{{ session('success') }}</span>
@@ -32,7 +31,32 @@
                 </div>
             @endif
 
-            <!-- Content Card -->
+            <form method="GET" action="{{ route('categories.index') }}" class="mb-4 flex items-center gap-2">
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search categories..."
+                    value="{{ request('search') }}"
+                    class="border rounded px-3 py-2 w-60"
+                />
+
+                <button class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900">
+                    Search
+                </button>
+            </form>
+            <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const searchInput = document.querySelector("input[name='search']");
+
+                if (searchInput) {
+                    searchInput.addEventListener("input", function () {
+                        if (this.value.trim() === "") {
+                            window.location.href = "{{ route('categories.index') }}";
+                        }
+                    });
+                }
+            });
+            </script>
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200">
@@ -53,7 +77,7 @@
                             @forelse($categories as $category)
                                 <tr>
                                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        {{ $loop->iteration }}
+                                       {{ $category->id }}
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900">{{ $category->name }}</div>

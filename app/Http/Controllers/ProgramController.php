@@ -8,10 +8,17 @@ use Illuminate\Http\Request;
 
 class ProgramController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $programs = Program::with('category')->latest()->paginate(10);
-        return view('programs.index', compact('programs'));
+        $search = trim($request->input('search'));
+
+        $programs = Program::when($search !== null && $search !== '', function ($query) use ($search) {
+                return $query->where('name', 'ilike', "%{$search}%");
+            })
+            ->orderBy('id', 'asc')
+            ->paginate(10);
+
+        return view('programs.index', compact('programs', 'search'));
     }
 
     public function create()

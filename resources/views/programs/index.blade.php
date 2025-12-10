@@ -31,7 +31,34 @@
                     </button>
                 </div>
             @endif
+            <!-- Search Form -->
+            <form method="GET" action="{{ route('programs.index') }}" class="mb-4 flex items-center gap-2">
+                <input
+                    type="text"
+                    name="search"
+                    placeholder="Search programs..."
+                    value="{{ request('search') }}"
+                    class="border rounded px-3 py-2 w-60"
+                />
 
+                <button class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-900">
+                    Search
+                </button>
+            </form>
+            <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const searchInput = document.querySelector("input[name='search']");
+
+                if (searchInput) {
+                    searchInput.addEventListener("input", function () {
+                        if (this.value.trim() === "") {
+                            window.location.href = "{{ route('programs.index') }}";
+                        }
+                    });
+                }
+            });
+            </script>
+            
             <!-- Content Card -->
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg border border-gray-100">
                 <div class="overflow-x-auto">
